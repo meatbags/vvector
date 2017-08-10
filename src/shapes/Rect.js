@@ -5,8 +5,6 @@ function Rect(x, y, width, height, params) {
         var params = {};
     }
 
-    this.animationTime = params.animationTime || 1.0;
-    this.easing = params.easing || 'ease-linear';
     this.p1 = new Point(x, y);
     this.dimensions = new Point(width, height)
     this.state = {
@@ -16,13 +14,25 @@ function Rect(x, y, width, height, params) {
             dimensions: new Point(width, height)
         }
     };
+
+    this.animationTime = params.animationTime || 1.0;
+    this.easing = params.easing || 'ease-linear';
+    this.percentage = params.percentageCoords || false;
 }
 
 Rect.prototype = {
     draw: function(ctx) {
         this.p1.update(this.animationTime, this.easing);
         this.dimensions.update(this.animationTime, this.easing);
-        ctx.strokeRect(this.p1.x, this.p1.y, this.dimensions.x, this.dimensions.y);
+
+        if (!this.percentage) {
+            ctx.strokeRect(this.p1.x, this.p1.y, this.dimensions.x, this.dimensions.y);
+        } else {
+            var w = ctx.canvas.width;
+            var h = ctx.canvas.height;
+
+            ctx.strokeRect(this.p1.x * w, this.p1.y * h, this.dimensions.x * w, this.dimensions.y * h);    
+        }
     },
 
     addState: function(label, x, y, width, height, params) {

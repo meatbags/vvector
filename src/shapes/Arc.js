@@ -5,8 +5,6 @@ function Arc(x, y, radius, startAngle, stopAngle) {
         var params = {};
     }
 
-    this.animationTime = params.animationTime || 1.0;
-    this.easing = params.easing || 'ease-linear';
     this.p1 = new Point(x, y);
     this.radius = new Point(radius, 0);
     this.angle = new Point(startAngle, stopAngle);
@@ -19,6 +17,10 @@ function Arc(x, y, radius, startAngle, stopAngle) {
             angle: new Point(startAngle, stopAngle)
         }
     };
+
+    this.animationTime = params.animationTime || 1.0;
+    this.easing = params.easing || 'ease-linear';
+    this.percentage = params.percentageCoords || false;
 }
 
 Arc.prototype = {
@@ -27,8 +29,16 @@ Arc.prototype = {
         this.radius.update(this.animationTime, this.easing);
         this.angle.update(this.animationTime, this.easing);
         ctx.beginPath();
-        //ctx.moveTo(this.p1.x, this.p1.y);
-        ctx.arc(this.p1.x, this.p1.y, this.radius.x, this.angle.x, this.angle.y, false);
+
+        if (!this.percentage) {
+            ctx.arc(this.p1.x, this.p1.y, this.radius.x, this.angle.x, this.angle.y, false);
+        } else {
+            var w = ctx.canvas.width;
+            var h = ctx.canvas.height;
+
+            ctx.arc(this.p1.x * w, this.p1.y * h, this.radius.x * w, this.angle.x, this.angle.y, false);
+        }
+
         ctx.stroke();
     },
 
