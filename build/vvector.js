@@ -1,7 +1,7 @@
 var vv = (function (exports) {
 'use strict';
 
-const Easing = (t, easing) => {
+function Easing(t, easing) {
     switch (easing) {
         case 'ease-linear':
             return t;
@@ -12,7 +12,7 @@ const Easing = (t, easing) => {
         default:
             return t;
     }
-};
+}
 
 function Point(x, y) {
     this.x = x;
@@ -247,4 +247,3 @@ exports.Arc = Arc;
 return exports;
 
 }({}));
-//# sourceMappingURL=vvector.js.map

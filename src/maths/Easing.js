@@ -1,4 +1,4 @@
-const Easing = (t, easing) => {
+function Easing(t, easing) {
     switch (easing) {
         case 'ease-linear':
             return t;
