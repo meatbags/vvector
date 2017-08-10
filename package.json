@@ -1,0 +1,26 @@
+{
+  "name": "vvector",
+  "version": "0.1.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "build": "rollup -c",
+    "build-uglify": "rollup -c && uglifyjs build/js/vvector.js -cm > build/js/vvector.min.js",
+    "dev": "rollup -c -w -m inline"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/meatbags/vvector.git"
+  },
+  "author": "meatbags",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/meatbags/vvector/issues"
+  },
+  "homepage": "https://github.com/meatbags/vvector#readme",
+  "devDependencies": {
+    "rollup": "^0.45.2",
+    "rollup-watch": "^4.3.1",
+    "uglify-js": "^3.0.27"
+  }
+}
