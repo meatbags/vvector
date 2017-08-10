@@ -10,11 +10,10 @@ function Line(x1, y1, x2, y2, params) {
     this.p1 = new Point(x1, y1);
     this.p2 = new Point(x2, y2);
     this.state = {
+        current: 'default',
         'default': {
-            x1: x1,
-            y1: y1,
-            x2: x2,
-            y2: y2
+            p1: new Point(x1, y1),
+            p2: new Point(x2, y2)
         }
     };
 }
@@ -31,35 +30,20 @@ Line.prototype = {
 
     addState: function(label, x1, y1, x2, y2, params) {
         this.state[label] = {
-            x1: x1,
-            y1: y1,
-            x2: x2,
-            y2: y2
+            p1: new Point(x1, y1),
+            p2: new Point(x2, y2)
         }
     },
 
     setState: function(label) {
-        var target = this.state[label] || this.state['default'];
+        if (this.state.current !== label) {
+            var target = this.state[label] || this.state['default'];
 
-        this.p1.setTarget(target.x1, target.y1);
-        this.p2.setTarget(target.x2, target.y2);
-    },
-
-    rateOfChange: function(t) {
-        if (typeof(t) !== 'undefined') {
-            this.rateOfChange = t;
-        } else {
-            return this.rateOfChange;
+            this.state.current = (this.state[label]) ? label : 'default';
+            this.p1.setTarget(target.p1);
+            this.p2.setTarget(target.p2);
         }
-    },
-
-    easing: function(e) {
-        if (typeof(e) !== 'undefined') {
-            this.easing = e;
-        } else {
-            return this.easing;
-        }
-    },
+    }
 };
 
 export { Line };

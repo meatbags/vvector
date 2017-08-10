@@ -19,12 +19,12 @@ Point.prototype = {
         this.y = this.start.y + (this.target.y - this.start.y) * te;
     },
 
-    setTarget: function(x, y) {
+    setTarget: function(point) {
         this.timeStamp = (new Date()).getTime();
         this.start.x = this.x;
         this.start.y = this.y;
-        this.target.x = x;
-        this.target.y = y;
+        this.target.x = point.x;
+        this.target.y = point.y;
     }
 };
 

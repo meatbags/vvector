@@ -1,8 +1,12 @@
 # vvector
 
-Canvas library for vector animation.
+Lightweight graphics library for animating Html5 Canvas primitives.
 
 ## build
 
->npm install
->npm run build
+```
+git clone https://github.com/meatbags/vvector
+cd vvector
+> npm install
+> npm run build
+```
