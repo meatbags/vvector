@@ -1,4 +1,43 @@
-import { Point } from './Point.js';
+var vv = (function (exports) {
+'use strict';
+
+const Easing = (t, easing) => {
+    switch (easing) {
+        case 'ease-linear':
+            return t;
+            break;
+        default:
+            return t;
+    }
+};
+
+function Point(x, y) {
+    this.x = x;
+    this.y = y;
+    this.start = {x: x, y: y};
+    this.target = {x: x, y: y};
+    this.timeStamp = 0;
+}
+
+Point.prototype = {
+    update: function(sec, easing) {
+        var t, te;
+
+        t = Math.min(sec, ((new Date()).getTime() - this.timeStamp) / 1000.0) / sec;
+        te = Easing(t, easing);
+
+        this.x = this.start.x + (this.target.x - this.start.x) * te;
+        this.y = this.start.y + (this.target.y - this.start.y) * te;
+    },
+
+    setTarget: function(x, y) {
+        this.timeStamp = (new Date()).getTime();
+        this.start.x = this.x;
+        this.start.y = this.y;
+        this.target.x = x;
+        this.target.y = y;
+    }
+};
 
 function Line(x1, y1, x2, y2, params) {
     if (typeof(params) === 'undefined') {
@@ -35,7 +74,7 @@ Line.prototype = {
             y1: y1,
             x2: x2,
             y2: y2
-        }
+        };
     },
 
     setState: function(label) {
@@ -62,4 +101,9 @@ Line.prototype = {
     },
 };
 
-export { Line };
+exports.Line = Line;
+
+return exports;
+
+}({}));
+//# sourceMappingURL=vvector.js.map

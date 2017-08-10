@@ -30,13 +30,8 @@ var App = {
     loop: function() {
         requestAnimFrame(App.loop);
 
-        App.timeNow = (new Date()).getTime();
-        delta = (App.timeNow - App.timePrevious) / 1000.0;
-        App.timePrevious = App.timeNow;
-
         App.ctx.clearRect(0, 0, App.cvs.width, App.cvs.height);
-        App.line.update(delta);
-        App.line.stroke(App.ctx);
+        App.line.draw(App.ctx);
     }
 };
 

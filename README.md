@@ -1,7 +1,8 @@
 # vvector
 
-A lightweight vector animation library.
-
-## usage
+Canvas library for vector animation.
 
 ## build
+
+>npm install
+>npm run build
