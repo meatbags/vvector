@@ -7,6 +7,6 @@ Lightweight graphics library for animating Html5 Canvas primitives.
 ```
 git clone https://github.com/meatbags/vvector
 cd vvector
-> npm install
-> npm run build
+npm install
+npm run build
 ```
