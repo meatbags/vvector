@@ -1,30 +1,33 @@
-import { Easing } from '../maths/Easing.js';
 
 function Point(x, y) {
     this.x = x;
     this.y = y;
-    this.start = {x: x, y: y};
-    this.target = {x: x, y: y};
-    this.timeStamp = 0;
+    this.from = {x: x, y: y};
+    this.to = {x: x, y: y};
 }
 
 Point.prototype = {
-    update: function(sec, easing) {
-        var t, te;
-
-        t = Math.min(sec, ((new Date()).getTime() - this.timeStamp) / 1000.0) / sec;
-        te = Easing(t, easing);
-
-        this.x = this.start.x + (this.target.x - this.start.x) * te;
-        this.y = this.start.y + (this.target.y - this.start.y) * te;
+    update: function(time) {
+        this.x = this.from.x + (this.to.x - this.from.x) * time;
+        this.y = this.from.y + (this.to.y - this.from.y) * time;
     },
 
-    setTarget: function(point) {
-        this.timeStamp = (new Date()).getTime();
-        this.start.x = this.x;
-        this.start.y = this.y;
-        this.target.x = point.x;
-        this.target.y = point.y;
+    setFrom: function(point) {
+        this.from.x = point.x;
+        this.from.y = point.y;
+    },
+
+    setTo: function(point) {
+        this.to.x = point.x;
+        this.to.y = point.y;
+    },
+
+    switchTo: function(point) {
+        // switch target mid-transition
+        this.from.x = this.x;
+        this.from.y = this.y;
+        this.to.x = point.x;
+        this.to.y = point.y;
     }
 };
 

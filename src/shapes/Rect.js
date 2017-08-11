@@ -1,56 +1,63 @@
 import { Point } from './Point.js';
+import { Animation } from '../core/Animation.js';
 
 function Rect(x, y, width, height, params) {
     if (typeof(params) === 'undefined') {
         var params = {};
     }
 
+    // coordinates
     this.p1 = new Point(x, y);
     this.dimensions = new Point(width, height)
-    this.state = {
-        current: 'default',
-        'default': {
-            p1: new Point(x, y),
-            dimensions: new Point(width, height)
-        }
-    };
 
-    this.animationTime = params.animationTime || 1.0;
-    this.easing = params.easing || 'ease-linear';
+    // settings
     this.percentage = params.percentageCoords || false;
-}
 
-Rect.prototype = {
-    draw: function(ctx) {
-        this.p1.update(this.animationTime, this.easing);
-        this.dimensions.update(this.animationTime, this.easing);
-
-        if (!this.percentage) {
-            ctx.strokeRect(this.p1.x, this.p1.y, this.dimensions.x, this.dimensions.y);
-        } else {
-            var w = ctx.canvas.width;
-            var h = ctx.canvas.height;
-
-            ctx.strokeRect(this.p1.x * w, this.p1.y * h, this.dimensions.x * w, this.dimensions.y * h);    
-        }
-    },
-
-    addState: function(label, x, y, width, height, params) {
-        this.state[label] = {
+    // animation
+    Animation.call(
+        this,
+        params.time || 1.0,
+        params.easing || 'ease-linear',
+        params.automation || false,
+        {
+            label: 'default',
             p1: new Point(x, y),
             dimensions: new Point(width, height)
         }
-    },
-
-    setState: function(label) {
-        if (this.state.current !== label) {
-            var target = this.state[label] || this.state['default'];
-
-            this.state.current = (this.state[label]) ? label : 'default';
-            this.p1.setTarget(target.p1);
-            this.dimensions.setTarget(target.dimensions);
-        }
-    }
+    );
 }
+
+Rect.prototype = Object.create(Animation.prototype);
+Rect.prototype.constructor = Rect;
+
+Rect.prototype.draw = function(ctx, stroke, fill) {
+    this.updateAnimation();
+    this.p1.update(this.time);
+    this.dimensions.update(this.time);
+
+    if (!this.percentage) {
+        if (fill)
+            ctx.fillRect(this.p1.x, this.p1.y, this.dimensions.x, this.dimensions.y);
+        if (typeof(stroke) === 'undefined' || stroke)
+            ctx.strokeRect(this.p1.x, this.p1.y, this.dimensions.x, this.dimensions.y);
+    } else {
+        var w = ctx.canvas.width,
+            h = ctx.canvas.height;
+
+        if (fill)
+            ctx.fillRect(this.p1.x * w, this.p1.y * h, this.dimensions.x * w, this.dimensions.y * h);
+        if (typeof(stroke) === 'undefined' || stroke)
+            ctx.strokeRect(this.p1.x * w, this.p1.y * h, this.dimensions.x * w, this.dimensions.y * h);
+    }
+};
+
+Rect.prototype.addState = function(label, x, y, width, height, params) {
+    // add state
+    this.pushState({
+        label: label,
+        p1: new Point(x, y),
+        dimensions: new Point(width, height)
+    });
+};
 
 export { Rect };
