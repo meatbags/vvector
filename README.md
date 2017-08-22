@@ -5,9 +5,7 @@ Animate and automate Canvas primitives. Light-weight. No-nonsense. Martinis.
 ## usage
 
 Get vvector
-```
 [https://github.com/meatbags/vvector/tree/master/build](https://github.com/meatbags/vvector/tree/master/build)
-```
 
 It's as easy as 1, 2, 3!
 ```
