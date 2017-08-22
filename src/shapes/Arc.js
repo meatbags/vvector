@@ -39,7 +39,7 @@ function Arc(x, y, radius, startAngle, stopAngle, params) {
 Arc.prototype = Object.create(Animation.prototype);
 Arc.prototype.constructor = Arc;
 
-Arc.prototype.draw = function(ctx, stroke, fill) {
+Arc.prototype.draw = function(ctx) {
     this.updateAnimation();
     this.p1.update(this.time);
     this.radius.update(this.time);

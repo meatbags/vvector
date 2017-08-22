@@ -1,20 +1,29 @@
-window.requestAnimFrame = (function(){
-  return  window.requestAnimationFrame       ||
-          window.webkitRequestAnimationFrame ||
-          window.mozRequestAnimationFrame    ||
-          function( callback ){
-            window.setTimeout(callback, 1000 / 60);
-          };
-})();
+var scene, circle;
 
+// create a new scene
+scene = new vv.Scene('my_canvas', {width: 200, height: 200});
+
+// add a circle with some animated states
+circle = new vv.Arc(100, 100, 20, 0, Math.PI * 2, {
+    automation: 'oscillate',
+    easing: 'ease-in-and-out',
+    time: 1,
+    strokeStyle: 'black',
+    fillStyle: 'yellow',
+    lineWidth: 2
+});
+circle.addState('state_2', 100, 100, 50, 0, Math.PI * 2);
+scene.add(circle);
+
+// run!
+scene.loop();
+
+/*
 var App = {
     init: function() {
-        // set up canvas
+        // set up scene
 
-        App.cvs = document.getElementById('canvas');
-        App.ctx = App.cvs.getContext('2d');
-        App.cvs.width = 400;
-        App.cvs.height = 400;
+        App.scene = new vv.Scene('my_canvas_id', {width: 400, height: 400});
 
         // create shapes & add states
 
@@ -75,32 +84,19 @@ var App = {
             $(this).addClass('active');
         })
 
+        // add to scene
+        App.scene.add(
+            App.line,
+            App.rect,
+            App.arc,
+            App.bezier
+        );
+
         // run loop
-
-        App.loop();
-    },
-
-    loop: function() {
-        requestAnimFrame(App.loop);
-
-        // clear canvas
-
-        App.ctx.clearRect(0, 0, App.cvs.width, App.cvs.height);
-
-        // draw shapes
-
-        App.line.draw(App.ctx);
-        App.bezier.draw(App.ctx);
-        App.rect.draw(App.ctx);
-        App.arc.draw(App.ctx);
-
-        // test new functions
-
-        for (var i=0; i<App.loopers.length; i++)
-            App.loopers[i].draw(App.ctx);
-
-        App.osc.draw(App.ctx);
+        App.scene.loop();
     }
 };
 
-window.onload = function(){ App.init(); };
+App.init();
+
+*/
