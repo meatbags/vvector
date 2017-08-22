@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "build": "rollup -c",
-    "build-uglify": "rollup -c && uglifyjs build/vvector.js -cm > build/vvector.min.js",
+    "uglify": "uglifyjs build/vvector.js -cm > build/vvector.min.js",
+    "build-uglify": "npm run build && npm run uglify",
     "dev": "rollup -c -w -m"
   },
   "repository": {

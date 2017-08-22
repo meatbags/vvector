@@ -496,4 +496,3 @@ exports.Arc = Arc;
 return exports;
 
 }({}));
-//# sourceMappingURL=vvector.js.map
