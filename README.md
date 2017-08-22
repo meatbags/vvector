@@ -6,7 +6,7 @@ Animate and automate Canvas primitives. Light-weight. No-nonsense. Martinis.
 
 Get vvector
 ```
-https://github.com/meatbags/vvector/tree/master/build
+[https://github.com/meatbags/vvector/tree/master/build](https://github.com/meatbags/vvector/tree/master/build)
 ```
 
 It's as easy as 1, 2, 3!
@@ -37,7 +37,7 @@ scene.loop();
 ## build
 
 ```
-git clone https://github.com/meatbags/vvector
+git clone [https://github.com/meatbags/vvector](https://github.com/meatbags/vvector)
 npm install
 npm run build
 ```
