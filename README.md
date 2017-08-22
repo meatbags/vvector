@@ -35,7 +35,7 @@ scene.loop();
 ## build
 
 ```
-git clone [https://github.com/meatbags/vvector](https://github.com/meatbags/vvector)
+git clone https://github.com/meatbags/vvector
 npm install
 npm run build
 ```
