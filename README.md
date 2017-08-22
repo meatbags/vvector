@@ -32,7 +32,6 @@ scene.add(circle);
 scene.loop();
 ```
 
-Output of above:
 ![Alt text](/images/test_01.gif?raw=true)
 
 ## build
