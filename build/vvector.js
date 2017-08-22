@@ -210,6 +210,11 @@ function Line(x1, y1, x2, y2, params) {
     // settings
     this.percentage = params.percentageCoords || false;
 
+    // style
+    this.strokeStyle = params.strokeStyle || '#000';
+    this.lineWidth = params.lineWidth || 1;
+    this.fillStyle = params.fillStyle || false;
+
     // animation
     Animation.call(
         this,
@@ -231,7 +236,9 @@ Line.prototype.draw = function(ctx) {
     this.updateAnimation();
     this.p1.update(this.time);
     this.p2.update(this.time);
-    
+
+    ctx.strokeStyle = this.strokeStyle;
+    ctx.lineWidth = this.lineWidth;
     ctx.beginPath();
     if (!this.percentage) {
         ctx.moveTo(this.p1.x, this.p1.y);
@@ -266,6 +273,13 @@ function Bezier(x1, y1, cp1x, cp1y, cp2x, cp2y, x2, y2, params) {
     // settings
     this.percentage = params.percentageCoords || false;
 
+    // style
+    this.stroke = params.stroke || true;
+    this.fill = (params.fillStyle || params.fill == true) ? true : false;
+    this.strokeStyle = params.strokeStyle || '#000';
+    this.lineWidth = params.lineWidth || 1;
+    this.fillStyle = params.fillStyle || '#fff';
+
     // animation
     Animation.call(
         this,
@@ -285,7 +299,7 @@ function Bezier(x1, y1, cp1x, cp1y, cp2x, cp2y, x2, y2, params) {
 Bezier.prototype = Object.create(Animation.prototype);
 Bezier.prototype.constructor = Bezier;
 
-Bezier.prototype.draw = function(ctx, stroke, fill) {
+Bezier.prototype.draw = function(ctx) {
     this.updateAnimation();
 
     this.p1.update(this.time);
@@ -299,16 +313,21 @@ Bezier.prototype.draw = function(ctx, stroke, fill) {
         ctx.bezierCurveTo(this.cp1.x, this.cp1.y, this.cp2.x, this.cp2.y, this.p2.x, this.p2.y);
     } else {
         var w = ctx.canvas.width,
-            h = ctx.canvas.height;
+          h = ctx.canvas.height;
 
         ctx.moveTo(this.p1.x * w, this.p1.y * h);
         ctx.bezierCurveTo(this.cp1.x * w, this.cp1.y * h, this.cp2.x * w, this.cp2.y * h, this.p2.x * w, this.p2.y * h);
     }
 
-    if (fill)
+    if (this.fill) {
+        ctx.fillStyle = this.fillStyle;
         ctx.fill();
-    if (typeof(stroke) === 'undefined' || stroke)
+    }
+    if (this.stroke) {
+        ctx.strokeStyle = this.strokeStyle;
+        ctx.lineWidth = this.lineWidth;
         ctx.stroke();
+    }
 };
 
 Bezier.prototype.addState = function(label, x1, y1, cp1x, cp1y, cp2x, cp2y, x2, y2, params) {
@@ -334,6 +353,13 @@ function Rect(x, y, width, height, params) {
     // settings
     this.percentage = params.percentageCoords || false;
 
+    // style
+    this.stroke = params.stroke || true;
+    this.fill = (params.fillStyle || params.fill == true) ? true : false;
+    this.strokeStyle = params.strokeStyle || '#000';
+    this.lineWidth = params.lineWidth || 1;
+    this.fillStyle = params.fillStyle || '#fff';
+
     // animation
     Animation.call(
         this,
@@ -351,24 +377,33 @@ function Rect(x, y, width, height, params) {
 Rect.prototype = Object.create(Animation.prototype);
 Rect.prototype.constructor = Rect;
 
-Rect.prototype.draw = function(ctx, stroke, fill) {
+Rect.prototype.draw = function(ctx) {
     this.updateAnimation();
     this.p1.update(this.time);
     this.dimensions.update(this.time);
 
     if (!this.percentage) {
-        if (fill)
+        if (this.fill) {
+            ctx.fillStyle = this.fillStyle;
             ctx.fillRect(this.p1.x, this.p1.y, this.dimensions.x, this.dimensions.y);
-        if (typeof(stroke) === 'undefined' || stroke)
+        } if (this.stroke) {
+            ctx.strokeStyle = this.strokeStyle;
+            ctx.lineWidth = this.lineWidth;
             ctx.strokeRect(this.p1.x, this.p1.y, this.dimensions.x, this.dimensions.y);
+        }
     } else {
         var w = ctx.canvas.width,
             h = ctx.canvas.height;
 
-        if (fill)
+        if (this.fill) {
+            ctx.fillStyle = this.fillStyle;
             ctx.fillRect(this.p1.x * w, this.p1.y * h, this.dimensions.x * w, this.dimensions.y * h);
-        if (typeof(stroke) === 'undefined' || stroke)
+        }
+        if (this.stroke) {
+            ctx.strokeStyle = this.strokeStyle;
+            ctx.lineWidth = this.lineWidth;
             ctx.strokeRect(this.p1.x * w, this.p1.y * h, this.dimensions.x * w, this.dimensions.y * h);
+        }
     }
 };
 
@@ -393,6 +428,13 @@ function Arc(x, y, radius, startAngle, stopAngle, params) {
 
     // settings
     this.percentage = params.percentageCoords || false;
+
+    // style
+    this.stroke = params.stroke || true;
+    this.fill = (params.fillStyle || params.fill == true) ? true : false;
+    this.strokeStyle = params.strokeStyle || '#000';
+    this.lineWidth = params.lineWidth || 1;
+    this.fillStyle = params.fillStyle || '#fff';
 
     // animation
     Animation.call(
@@ -424,10 +466,16 @@ Arc.prototype.draw = function(ctx, stroke, fill) {
     } else {
         ctx.arc(this.p1.x * ctx.canvas.width, this.p1.y * ctx.canvas.height, this.radius.x * ctx.canvas.width, this.angle.x, this.angle.y, false);
     }
-    if (fill)
+
+    if (this.fill) {
+        ctx.fillStyle = this.fillStyle;
         ctx.fill();
-    if (typeof(stroke) === 'undefined' || stroke)
+    }
+    if (this.stroke) {
+        ctx.fillStyle = this.fillStyle;
+        ctx.lineWidth = this.lineWidth;
         ctx.stroke();
+    }
 };
 
 Arc.prototype.addState = function(label, x, y, radius, startAngle, stopAngle) {

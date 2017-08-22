@@ -13,6 +13,11 @@ function Line(x1, y1, x2, y2, params) {
     // settings
     this.percentage = params.percentageCoords || false;
 
+    // style
+    this.strokeStyle = params.strokeStyle || '#000';
+    this.lineWidth = params.lineWidth || 1;
+    this.fillStyle = params.fillStyle || false;
+
     // animation
     Animation.call(
         this,
@@ -34,7 +39,9 @@ Line.prototype.draw = function(ctx) {
     this.updateAnimation();
     this.p1.update(this.time);
     this.p2.update(this.time);
-    
+
+    ctx.strokeStyle = this.strokeStyle;
+    ctx.lineWidth = this.lineWidth;
     ctx.beginPath();
     if (!this.percentage) {
         ctx.moveTo(this.p1.x, this.p1.y);

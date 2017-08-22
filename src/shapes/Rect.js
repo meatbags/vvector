@@ -13,6 +13,13 @@ function Rect(x, y, width, height, params) {
     // settings
     this.percentage = params.percentageCoords || false;
 
+    // style
+    this.stroke = params.stroke || true;
+    this.fill = (params.fillStyle || params.fill == true) ? true : false;
+    this.strokeStyle = params.strokeStyle || '#000';
+    this.lineWidth = params.lineWidth || 1;
+    this.fillStyle = params.fillStyle || '#fff';
+
     // animation
     Animation.call(
         this,
@@ -30,24 +37,33 @@ function Rect(x, y, width, height, params) {
 Rect.prototype = Object.create(Animation.prototype);
 Rect.prototype.constructor = Rect;
 
-Rect.prototype.draw = function(ctx, stroke, fill) {
+Rect.prototype.draw = function(ctx) {
     this.updateAnimation();
     this.p1.update(this.time);
     this.dimensions.update(this.time);
 
     if (!this.percentage) {
-        if (fill)
+        if (this.fill) {
+            ctx.fillStyle = this.fillStyle;
             ctx.fillRect(this.p1.x, this.p1.y, this.dimensions.x, this.dimensions.y);
-        if (typeof(stroke) === 'undefined' || stroke)
+        } if (this.stroke) {
+            ctx.strokeStyle = this.strokeStyle;
+            ctx.lineWidth = this.lineWidth;
             ctx.strokeRect(this.p1.x, this.p1.y, this.dimensions.x, this.dimensions.y);
+        }
     } else {
         var w = ctx.canvas.width,
             h = ctx.canvas.height;
 
-        if (fill)
+        if (this.fill) {
+            ctx.fillStyle = this.fillStyle;
             ctx.fillRect(this.p1.x * w, this.p1.y * h, this.dimensions.x * w, this.dimensions.y * h);
-        if (typeof(stroke) === 'undefined' || stroke)
+        }
+        if (this.stroke) {
+            ctx.strokeStyle = this.strokeStyle;
+            ctx.lineWidth = this.lineWidth;
             ctx.strokeRect(this.p1.x * w, this.p1.y * h, this.dimensions.x * w, this.dimensions.y * h);
+        }
     }
 };
 

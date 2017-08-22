@@ -14,6 +14,13 @@ function Arc(x, y, radius, startAngle, stopAngle, params) {
     // settings
     this.percentage = params.percentageCoords || false;
 
+    // style
+    this.stroke = params.stroke || true;
+    this.fill = (params.fillStyle || params.fill == true) ? true : false;
+    this.strokeStyle = params.strokeStyle || '#000';
+    this.lineWidth = params.lineWidth || 1;
+    this.fillStyle = params.fillStyle || '#fff';
+
     // animation
     Animation.call(
         this,
@@ -44,10 +51,16 @@ Arc.prototype.draw = function(ctx, stroke, fill) {
     } else {
         ctx.arc(this.p1.x * ctx.canvas.width, this.p1.y * ctx.canvas.height, this.radius.x * ctx.canvas.width, this.angle.x, this.angle.y, false);
     }
-    if (fill)
+
+    if (this.fill) {
+        ctx.fillStyle = this.fillStyle;
         ctx.fill();
-    if (typeof(stroke) === 'undefined' || stroke)
+    }
+    if (this.stroke) {
+        ctx.fillStyle = this.fillStyle;
+        ctx.lineWidth = this.lineWidth;
         ctx.stroke();
+    }
 };
 
 Arc.prototype.addState = function(label, x, y, radius, startAngle, stopAngle) {
