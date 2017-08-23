@@ -34,6 +34,11 @@ function Scene(selector, params) {
     }
 };
 
+Scene.prototype.setSize = function(width, height) {
+    this.cvs.width = width;
+    this.cvs.height = height;
+}
+
 Scene.prototype.add = function() {
     for (var i=0; i<arguments.length; i+=1) {
         this.content.push(arguments[i]);

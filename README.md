@@ -2,19 +2,22 @@
 
 Animate and automate Canvas primitives. Light-weight. No-nonsense. Martinis.
 
-## usage
+## use
 
-Get vvector
-[https://github.com/meatbags/vvector/tree/master/build](https://github.com/meatbags/vvector/tree/master/build)
+Get the [minified library](https://github.com/meatbags/vvector/tree/master/build) and include it in your project.
 
-It's as easy as 1, 2, 3!
+```html
+<script type='text/javascript' src='./path/to/vvector.min.js'></script>
 ```
+
+Create an animation with ease!
+```javascript
 var scene, circle;
 
-// 1. create a scene
+// create a scene
 scene = new vv.Scene('my_canvas', {width: 200, height: 200});
 
-// 2. add a circle with some animated states
+// create a circle with some states
 circle = new vv.Arc(100, 100, 20, 0, Math.PI * 2, {
     automation: 'oscillate',
     easing: 'ease-in-and-out',
@@ -24,13 +27,34 @@ circle = new vv.Arc(100, 100, 20, 0, Math.PI * 2, {
     lineWidth: 2
 });
 circle.addState('state_2', 100, 100, 50, 0, Math.PI * 2);
+
+// add to scene
 scene.add(circle);
 
-// 3. run!
+// run!
 scene.loop();
 ```
 
 ![Alt text](/images/test_01.gif?raw=true)
+
+## documentation
+
+* [Scene](#scene)
+* [Line](#line)
+* [Bezier](#bezier)
+* [Rect](#rect)
+* [Arc](#arc)
+
+### Scene(id, [params])
+
+..id ```string``` ```required```
+....Id of the canvas element. If none exists, it will be created.
+
+..params ```object```
+....width ```number```
+......Width of the canvas in pixels.
+....height ```number```
+......Height of the canvas in pixels.
 
 ## build
 
