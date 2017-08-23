@@ -19,12 +19,12 @@ scene = new vv.Scene('my_canvas', {width: 200, height: 200});
 
 // create a circle with some states
 circle = new vv.Arc(100, 100, 20, 0, Math.PI * 2, {
-    automation: 'oscillate',
-    easing: 'ease-in-and-out',
-    time: 1,
     strokeStyle: 'black',
     fillStyle: 'yellow',
-    lineWidth: 2
+    lineWidth: 2,
+    automation: 'oscillate',
+    easing: 'ease-in-and-out',
+    time: 1
 });
 circle.addState('state_2', 100, 100, 50, 0, Math.PI * 2);
 
