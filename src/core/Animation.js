@@ -7,12 +7,12 @@ function Animation(time, easing, automation, first_state) {
     this.states = [first_state];
 
     // settings
-    this.time = time;
+    this.animationTime = time;
     this.easing = easing;
     this.automation = automation;
 
     // timekeeping
-    this.timer = new Timer(this.time, this.easing, this.automation);
+    this.timer = new Timer(this.animationTime, this.easing, this.automation);
     this.time = 0;
 }
 
@@ -34,7 +34,15 @@ Animation.prototype = {
 
     this.time = t;
   },
-  
+
+  setAnimation: function(params) {
+    this.automation = params.automation || this.automation;
+    this.easing = params.easing || this.easing;
+    this.animationTime = params.time || this.animationTime;
+    this.timer = new Timer(this.animationTime, this.easing, this.automation);
+    this.time = 0;
+  },
+
   defaultState: function(defaultState) {
     this.states[0] = defaultState;
     this.timer.reset();

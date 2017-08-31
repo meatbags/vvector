@@ -1,20 +1,16 @@
 var scene, circle, line, rect, bez;
 
 // create a new scene
-scene = new vv.Scene('my_canvas', {width: 600, height: 200});
+scene = new vv.Scene('my_canvas', {width: 200, height: 200});
 
 // create a circle with animated states
-circle = new vv.Arc({
-  label: 'wtf',
-  x: 100,
-  y: 100,
-  radius: 20,
-  fillStyle: 'yellow',
+circle = new vv.Arc({x: 100, y: 100, radius: 20, fillStyle: 'yellow', lineWidth: 2});
+circle.addState({label: '?', radius: 50});
+circle.setAnimation({
   automation: 'oscillate',
   easing: 'ease-in-and-out',
-  lineWidth: 2
-})
-circle.addState({label: '?', radius: 50});
+  time: 3
+});
 
 line = new vv.Line({
   x1: 0, y1: 0, x2: 100, y2: 100, lineWidth: 10, automation: 'oscillate', time: 2
@@ -41,7 +37,7 @@ rect = new vv.Rect({
 rect.addState({strokeStyle: 'red', fillStyle: 'white'})
 
 // add to scene
-scene.add(circle, line, bez, rect);
+scene.add(circle);
 
 // run!
 scene.loop();
