@@ -18,18 +18,10 @@ var scene, circle;
 scene = new vv.Scene('my_canvas', {width: 600, height: 200});
 
 // create a circle
-circle = new vv.Arc({
-  x: 100,
-  y: 100,
-  radius: 20,
-  fillStyle: 'yellow',
-  automation: 'oscillate',
-  easing: 'ease-in-and-out',
-  lineWidth: 2
-});
+circle = new vv.Arc({x: 100, y: 100, radius: 20, fillStyle: 'yellow', automation: 'oscillate', easing: 'ease-in-and-out', lineWidth: 2});
 
 // add an new animation state
-circle.addState('state_2', {radius: 50});
+circle.addState({radius: 50});
 
 // add to scene
 scene.add(circle);
