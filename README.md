@@ -10,23 +10,26 @@ Get the [minified library](https://github.com/meatbags/vvector/tree/master/build
 <script type='text/javascript' src='./path/to/vvector.min.js'></script>
 ```
 
-Example, a simple scene:
+A simple scene example:
 ```javascript
 var scene, circle;
 
-// create a scene
-scene = new vv.Scene('my_canvas', {width: 200, height: 200});
+// create a new scene
+scene = new vv.Scene('my_canvas', {width: 600, height: 200});
 
-// create a circle with some states
-circle = new vv.Arc(100, 100, 20, 0, Math.PI * 2, {
-    strokeStyle: 'black',
-    fillStyle: 'yellow',
-    lineWidth: 2,
-    automation: 'oscillate',
-    easing: 'ease-in-and-out',
-    time: 1
+// create a circle
+circle = new vv.Arc({
+  x: 100,
+  y: 100,
+  radius: 20,
+  fillStyle: 'yellow',
+  automation: 'oscillate',
+  easing: 'ease-in-and-out',
+  lineWidth: 2
 });
-circle.addState('state_2', 100, 100, 50, 0, Math.PI * 2);
+
+// add an new animation state
+circle.addState('state_2', {radius: 50});
 
 // add to scene
 scene.add(circle);

@@ -17,81 +17,82 @@ function Animation(time, easing, automation, first_state) {
 }
 
 Animation.prototype = {
-    updateAnimation: function() {
-        var t = this.timer.getTime(this.states.length);
+  updateAnimation: function() {
+    var t = this.timer.getTime(this.states.length);
 
-        // automate states
-        if (this.automation && this.states.length > 1) {
-            var index = Math.floor(t);
+    // automate states
+    if (this.automation && this.states.length > 1) {
+      var index = Math.floor(t);
 
-            if (this.fromState !== index || this.toState !== index + 1) {
-                this.setFromState(index);
-                this.setToState(index + 1);
-            }
+      if (this.fromState !== index || this.toState !== index + 1) {
+        this.setFromState(index);
+        this.setToState(index + 1);
+      }
 
-            t = t % 1;
-        }
-
-        this.time = t;
-    },
-
-    pushState: function(newState) {
-        this.states.push(newState);
-
-        // reset animation
-        this.timer.reset();
-    },
-
-    setFromState: function(index) {
-        var target = this.states[index];
-
-        // set new targets
-        for (var prop in target)
-            if (prop !== 'label')
-                this[prop].setFrom(target[prop]);
-
-        // set index
-        this.fromState = index;
-    },
-
-    setToState: function(index) {
-        var target = this.states[index];
-
-        // set new targets
-        for (var prop in target)
-            if (prop !== 'label')
-                this[prop].setTo(target[prop]);
-
-        // set index
-        this.toState = index;
-    },
-
-    switchState: function(index) {
-        var target = this.states[index];
-
-        // set new target positions
-        for (var prop in target)
-            if (prop !== 'label')
-                this[prop].switchTo(target[prop]);
-
-        // set index
-        this.toState = index;
-
-        // reset timer
-        this.timer.reset();
-    },
-
-    setState: function(label) {
-        // search for index with label
-        if (this.states[this.toState].label !== label) {
-            for (var i=0; i<this.states.length; i++) {
-                if (label === this.states[i].label) {
-                    this.switchState(i);
-                    break;
-                }
-            }
-        }
+      t = t % 1;
     }
+
+    this.time = t;
+  },
+  
+  defaultState: function(defaultState) {
+    this.states[0] = defaultState;
+    this.timer.reset();
+  },
+
+  pushState: function(newState) {
+    this.states.push(newState);
+    this.timer.reset();
+  },
+
+  setFromState: function(index) {
+    // set new targets
+    var target = this.states[index];
+
+    for (var prop in target)
+      if (prop !== 'label')
+        this[prop].setFrom(target[prop]);
+
+    // set index
+    this.fromState = index;
+  },
+
+  setToState: function(index) {
+    // set new targets
+    var target = this.states[index];
+
+    for (var prop in target)
+      if (prop !== 'label')
+        this[prop].setTo(target[prop]);
+
+    // set index
+    this.toState = index;
+  },
+
+  switchState: function(index) {
+    // set new target positions
+    var target = this.states[index];
+
+    for (var prop in target)
+      if (prop !== 'label')
+        this[prop].switchTo(target[prop]);
+
+    // set index
+    this.toState = index;
+    this.timer.reset();
+  },
+
+  setState: function(label) {
+    // search for index with label
+    if (this.states[this.toState].label !== label) {
+      for (var i=0; i<this.states.length; i++) {
+        if (label === this.states[i].label) {
+          this.switchState(i);
+          break;
+        }
+      }
+    }
+  }
 };
 
 export { Animation };

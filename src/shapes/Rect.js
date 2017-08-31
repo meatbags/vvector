@@ -1,35 +1,58 @@
 import { Point } from './Point.js';
+import { Colour } from '../styles/Colour.js';
 import { Animation } from '../core/Animation.js';
+import { CopyParams } from '../utils/Params.js';
 
-function Rect(x, y, width, height, params) {
+function Rect(params) {
     if (typeof(params) === 'undefined') {
         var params = {};
     }
 
+    // set defaults
+    this.defaults = {
+      label: params.label || 'default',
+      x: params.x || 0,
+      y: params.y || 0,
+      width: params.width || 1,
+      height: params.height || 1,
+      stroke: params.stroke || true,
+      fill: (params.fillStyle || params.fill == true) ? true : false,
+      strokeStyle: params.strokeStyle || 0x0,
+      fillStyle: params.fillStyle || 0xffffff,
+      lineWidth: params.lineWidth || 1,
+      percentageCoords: params.percentageCoords || false,
+      time: params.time || 1.0,
+      easing: params.easing || 'ease-linear',
+      automation: params.automation || false
+    };
+
     // coordinates
-    this.p1 = new Point(x, y);
-    this.dimensions = new Point(width, height)
+    this.p1 = new Point(this.defaults.x, this.defaults.y);
+    this.dimensions = new Point(this.defaults.width, this.defaults.height);
 
     // settings
-    this.percentage = params.percentageCoords || false;
+    this.percentage = this.defaults.percentageCoords;
 
     // style
-    this.stroke = params.stroke || true;
-    this.fill = (params.fillStyle || params.fill == true) ? true : false;
-    this.strokeStyle = params.strokeStyle || '#000';
-    this.lineWidth = params.lineWidth || 1;
-    this.fillStyle = params.fillStyle || '#fff';
+    this.stroke = this.defaults.stroke;
+    this.fill = this.defaults.fill;
+    this.lineWidth = new Point(this.defaults.lineWidth, 0);
+    this.strokeStyle = new Colour(this.defaults.strokeStyle);
+    this.fillStyle = new Colour(this.defaults.fillStyle);
 
     // animation
     Animation.call(
         this,
-        params.time || 1.0,
-        params.easing || 'ease-linear',
-        params.automation || false,
+        this.defaults.time,
+        this.defaults.easing,
+        this.defaults.automation,
         {
-            label: 'default',
-            p1: new Point(x, y),
-            dimensions: new Point(width, height)
+            label: this.defaults.label,
+            p1: new Point(this.defaults.x, this.defaults.y),
+            dimensions: new Point(this.defaults.width, this.defaults.height),
+            lineWidth: new Point(this.defaults.lineWidth, 0),
+            strokeStyle: new Colour(this.defaults.strokeStyle),
+            fillStyle: new Colour(this.defaults.fillStyle)
         }
     );
 }
@@ -41,14 +64,18 @@ Rect.prototype.draw = function(ctx) {
     this.updateAnimation();
     this.p1.update(this.time);
     this.dimensions.update(this.time);
+    this.lineWidth.update(this.time);
+    this.strokeStyle.update(this.time);
+    this.fillStyle.update(this.time);
 
     if (!this.percentage) {
         if (this.fill) {
-            ctx.fillStyle = this.fillStyle;
+            ctx.fillStyle = this.fillStyle.colour;
             ctx.fillRect(this.p1.x, this.p1.y, this.dimensions.x, this.dimensions.y);
         } if (this.stroke) {
-            ctx.strokeStyle = this.strokeStyle;
-            ctx.lineWidth = this.lineWidth;
+          ctx.strokeStyle = this.strokeStyle.colour;
+          ctx.lineWidth = this.lineWidth.x;
+            ctx.lineCap = 'round';
             ctx.strokeRect(this.p1.x, this.p1.y, this.dimensions.x, this.dimensions.y);
         }
     } else {
@@ -56,24 +83,31 @@ Rect.prototype.draw = function(ctx) {
             h = ctx.canvas.height;
 
         if (this.fill) {
-            ctx.fillStyle = this.fillStyle;
+            ctx.fillStyle = this.fillStyle.colour;
             ctx.fillRect(this.p1.x * w, this.p1.y * h, this.dimensions.x * w, this.dimensions.y * h);
         }
         if (this.stroke) {
-            ctx.strokeStyle = this.strokeStyle;
-            ctx.lineWidth = this.lineWidth;
+            ctx.strokeStyle = this.strokeStyle.colour;
+            ctx.lineWidth = this.lineWidth.x;
+            ctx.lineCap = 'round';
             ctx.strokeRect(this.p1.x * w, this.p1.y * h, this.dimensions.x * w, this.dimensions.y * h);
         }
     }
 };
 
-Rect.prototype.addState = function(label, x, y, width, height, params) {
-    // add state
-    this.pushState({
-        label: label,
-        p1: new Point(x, y),
-        dimensions: new Point(width, height)
-    });
+Rect.prototype.addState = function(params) {
+  var newParams = CopyParams(this.defaults, params);
+  var newState = {
+    label: newParams.label,
+    p1: new Point(newParams.x, newParams.y),
+    dimensions: new Point(newParams.width, newParams.height),
+    lineWidth: new Point(newParams.lineWidth, 0),
+    strokeStyle: new Colour(newParams.strokeStyle),
+    fillStyle: new Colour(newParams.fillStyle)
+  };
+
+  // add state
+  this.pushState(newState);
 };
 
 export { Rect };
