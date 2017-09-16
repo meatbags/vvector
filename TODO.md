@@ -5,6 +5,7 @@
 - path support
 - SVG loading
 - animated styling
+- common transforms
 
 ## Ease of use
 
